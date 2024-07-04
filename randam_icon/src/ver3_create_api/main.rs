@@ -10,37 +10,10 @@ const MIN_SHAPE_SIZE: u32 = 150;
 const MAX_SHAPE_SIZE: u32 = 250;
 const SHAPE_TYPES: u8 = 5;
 const COLORS: [&str; 31] = [
-    "#f19072", //曙色
-    "#e4dc8a", //枯れ草色
-    "#f8f4e6", //象牙色
-    "#b7282e", //茜色
-    "#f09199", //桃色
-    "#fef4f4", //桜色
-    "#c39143", //黄土色
-    "#8a3b00", //褐色
-    "#f08300", //蜜柑色
-    "#ed6d3d", //柿色
-    "#ee7800", //橙色
-    "#eb6101", //朱色
-    "#ffd900", //蒲公英色
-    "#ffec47", //菜の花色
-    "#f8b500", //山吹色
-    "#e6b422", //金色
-    "#2f5d50", //天鵞絨
-    "#007b43", //常磐色
-    "#7ebeab", //青竹色
-    "#98d98e", //若緑
-    "#dccb18", //緑黄色
-    "#928c36", //鶯色
-    "#38b48b", //翡翠色
-    "#bce2e8", //水色
-    "#a0d8ef", //空色
-    "#4c6cb3", //群青色
-    "#0d0015", //漆黒
-    "#bbbcde", //藤色
-    "#595857", //墨
-    "#f3f3f3", //乳白色
-    "#9d5b8b", //京紫
+    "#f19072", "#e4dc8a", "#f8f4e6", "#b7282e", "#f09199", "#fef4f4", "#c39143", "#8a3b00",
+    "#f08300", "#ed6d3d", "#ee7800", "#eb6101", "#ffd900", "#ffec47", "#f8b500", "#e6b422",
+    "#2f5d50", "#007b43", "#7ebeab", "#98d98e", "#dccb18", "#928c36", "#38b48b", "#bce2e8",
+    "#a0d8ef", "#4c6cb3", "#0d0015", "#bbbcde", "#595857", "#f3f3f3", "#9d5b8b",
 ];
 
 async fn generate_icon() -> impl Responder {
@@ -71,18 +44,22 @@ async fn generate_icon() -> impl Responder {
     // 画像をバイナリ形式で返す
     let mut buffer = Vec::new();
     let mut cursor = Cursor::new(&mut buffer);
-    img.write_to(&mut cursor, image::ImageOutputFormat::Png)
-        .unwrap();
+    img.write_to(&mut cursor, image::ImageOutputFormat::Png).unwrap();
 
-    HttpResponse::Ok().content_type("image/png").body(buffer)
+    HttpResponse::Ok()
+        .content_type("image/png")
+        .body(buffer)
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().route("/generate-icon", web::get().to(generate_icon)))
-        .bind("127.0.0.1:8080")?
-        .run()
-        .await
+    HttpServer::new(|| {
+        App::new()
+            .route("/generate-icon", web::get().to(generate_icon))
+    })
+    .bind("127.0.0.1:8080")?
+    .run()
+    .await
 }
 
 // ランダムな図形を描画する関数
@@ -146,13 +123,7 @@ fn draw_circle(img: &mut RgbImage, position: (u32, u32), size: u32, color: Rgb<u
 }
 
 // 半円を描画する関数
-fn draw_semi_circle(
-    img: &mut RgbImage,
-    position: (u32, u32),
-    size: u32,
-    angle: f32,
-    color: Rgb<u8>,
-) {
+fn draw_semi_circle(img: &mut RgbImage, position: (u32, u32), size: u32, angle: f32, color: Rgb<u8>) {
     let (cx, cy) = position;
     let radius = size as f32;
     for x in cx.saturating_sub(size)..=cx.saturating_add(size) {
@@ -163,10 +134,7 @@ fn draw_semi_circle(
             if distance_squared <= radius * radius {
                 let point_angle = (dy).atan2(dx);
                 let adjusted_angle = (point_angle - angle + 2.0 * PI) % (2.0 * PI);
-                if (PI / 2.0..=3.0 * PI / 2.0).contains(&adjusted_angle)
-                    && x < ICON_SIZE
-                    && y < ICON_SIZE
-                {
+                if (PI / 2.0..=3.0 * PI / 2.0).contains(&adjusted_angle) && x < ICON_SIZE && y < ICON_SIZE {
                     img.put_pixel(x, y, color);
                 }
             }
@@ -175,7 +143,13 @@ fn draw_semi_circle(
 }
 
 // 四角形を描画する関数
-fn draw_square(img: &mut RgbImage, position: (u32, u32), size: u32, angle: f32, color: Rgb<u8>) {
+fn draw_square(
+    img: &mut RgbImage,
+    position: (u32, u32),
+    size: u32,
+    angle: f32,
+    color: Rgb<u8>,
+) {
     let (cx, cy) = position;
     let half_size = size as f32 / 2.0;
     let points: Vec<(i32, i32)> = (0..4)
@@ -191,7 +165,13 @@ fn draw_square(img: &mut RgbImage, position: (u32, u32), size: u32, angle: f32, 
 }
 
 // 五角形を描画する関数
-fn draw_pentagon(img: &mut RgbImage, position: (u32, u32), size: u32, angle: f32, color: Rgb<u8>) {
+fn draw_pentagon(
+    img: &mut RgbImage,
+    position: (u32, u32),
+    size: u32,
+    angle: f32,
+    color: Rgb<u8>,
+) {
     let (cx, cy) = position;
     let points: Vec<(i32, i32)> = (0..5)
         .map(|i| {
@@ -206,7 +186,13 @@ fn draw_pentagon(img: &mut RgbImage, position: (u32, u32), size: u32, angle: f32
 }
 
 // 六角形を描画する関数
-fn draw_hexagon(img: &mut RgbImage, position: (u32, u32), size: u32, angle: f32, color: Rgb<u8>) {
+fn draw_hexagon(
+    img: &mut RgbImage,
+    position: (u32, u32),
+    size: u32,
+    angle: f32,
+    color: Rgb<u8>,
+) {
     let (cx, cy) = position;
     let points: Vec<(i32, i32)> = (0..6)
         .map(|i| {
@@ -222,11 +208,9 @@ fn draw_hexagon(img: &mut RgbImage, position: (u32, u32), size: u32, angle: f32,
 
 // ポリゴンを塗りつぶす関数
 fn fill_polygon(img: &mut RgbImage, points: &[(i32, i32)], color: Rgb<u8>) {
-    let (min_y, max_y) = points
-        .iter()
-        .fold((i32::MAX, i32::MIN), |(min_y, max_y), &(_, y)| {
-            (min_y.min(y), max_y.max(y))
-        });
+    let (min_y, max_y) = points.iter().fold((i32::MAX, i32::MIN), |(min_y, max_y), &(_, y)| {
+        (min_y.min(y), max_y.max(y))
+    });
 
     for y in min_y..=max_y {
         let mut intersections = vec![];
