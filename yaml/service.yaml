@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: randam-icon 
+  name: randam-icon-service
+  namespace: randam-icon
+spec:
+  selector:
+    app: randam-icon
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      # nodePort: 30036  # 任意のポート番号を指定
+  # type: NodePort
+  type: ClusterIP

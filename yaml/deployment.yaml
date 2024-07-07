@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: randam-icon
+  name: randam-icon-deployment
+  namespace: randam-icon
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: randam-icon
+  template:
+    metadata:
+      labels:
+        app: randam-icon
+    spec:
+      containers:
+      - name: randam-icon
+        image: tororomeshi/randam_icon:0.3
+        ports:
+        - containerPort: 8080
+        env:
+        - name: RUST_LOG
+          value: info
