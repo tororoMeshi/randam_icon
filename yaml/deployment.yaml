@@ -17,7 +17,8 @@ spec:
     spec:
       containers:
       - name: randam-icon
-        image: tororomeshi/randam_icon:0.3
+        image: tororomeshi/randam_icon:0.4
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
         env:
