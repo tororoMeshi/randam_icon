@@ -1,5 +1,16 @@
-# randam_icon
+# random_icon
 This project is a web application that generates random icons using geometric shapes. It provides an API endpoint to generate icons and return them as PNG images.
+
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Logging](#logging)
+- [Kubernetes Deployment](#kubernetes-deployment)
+- [Sample Icon](#sample-icon)
+- [License](#license)
 
 ## Introduction
 The Random Icon Generator API generates random icons composed of various geometric shapes, each with random sizes, colors, and orientations. The API is built with Rust and Actix Web, and it logs each request with a unique UUID for traceability.
@@ -15,8 +26,8 @@ To build and run the API locally, follow these steps:
 1. Ensure you have Rust installed.
 2. Clone the repository:
 ```sh
-git clone git@github.com:tororoMeshi/randam_icon.git
-cd randam_icon/randam_icon
+git clone git@github.com:tororoMeshi/random_icon.git
+cd random_icon/random_icon
 ```
 3. Build the project:
 ```sh
@@ -31,7 +42,7 @@ cargo run
 The API provides a single endpoint to generate an icon:
 
 - GET `/generate-icon`
-### Exsample Request
+### Example Request
 ```sh
 curl http://localhost:8080/generate-icon --output icon.png
 ```
@@ -52,7 +63,7 @@ The application uses `flexi_logger` for logging. Logs include information about 
 To deploy the application on Kubernetes, follow these steps:
 1. Build and push the Docker image to your container registry:
 ```sh
-cd randam_icon/randam_icon
+cd random_icon/random_icon
 docker build -t yourusername/random-icon-generator .
 docker push yourusername/random-icon-generator
 ```
@@ -62,7 +73,8 @@ kubectl apply -f yaml/deployment.yaml
 kubectl apply -f yaml/service.yaml
 ```
 ### Example Kubernetes Manifest
-```yaml:deployment.yaml
+deployment.yaml
+```yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -83,7 +95,8 @@ spec:
         ports:
         - containerPort: 8080
 ```
-```yaml:service.yaml
+service.yaml
+```yaml
 apiVersion: v1
 kind: Service
 metadata:
@@ -101,13 +114,15 @@ spec:
 3. Access the API using the node's IP address and the NodePort defined in the service manifest.
 
 ## Sample Icon
-![generate-icon-0.png](https://github.com/tororoMeshi/randam_icon/blob/main/img/generate-icon-0.png)
+### Sample 1
+![generate-icon-0.png](https://github.com/tororoMeshi/random_icon/blob/main/img/generate-icon-0.png)
 
+### Sample 2
+![generate-icon-1.png](https://github.com/tororoMeshi/random_icon/blob/main/img/generate-icon-1.png)
 
-![generate-icon-1.png](https://github.com/tororoMeshi/randam_icon/blob/main/img/generate-icon-1.png)
-
-![generate-icon-2.png](https://github.com/tororoMeshi/randam_icon/blob/main/img/generate-icon-2.png)
+### Sample 3
+![generate-icon-2.png](https://github.com/tororoMeshi/random_icon/blob/main/img/generate-icon-2.png)
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE]("https://github.com/tororoMeshi/randam_icon/blob/main/LICENSE") file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/tororoMeshi/random_icon/blob/main/LICENSE) file for details.
 
